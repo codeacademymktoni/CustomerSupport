@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CustomerSupport.Models;
 using CustomerSupport.Repositories;
+using CustomerSupport.Repositories.Interfaces;
+using CustomerSupport.Services;
+using CustomerSupport.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -37,18 +41,18 @@ namespace CustomerSupport
             services.AddDbContext<CustomerSupportDbContext>(options =>
             options.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=CustomerSupportDb; Integrated Security=True"));
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<User>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<CustomerSupportDbContext>();
 
-            services.AddMvc().AddRazorPagesOptions( options => {
-                options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            
 
-            
+            services.AddTransient<ITicketService, TicketService>();
+            services.AddTransient<ITicketRepository, TicketRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<ICommentService, CommentService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +77,7 @@ namespace CustomerSupport
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Home}/{id?}");
+                    template: "{controller=Ticket}/{action=Home}/{id?}");
             });
         }
     }

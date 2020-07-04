@@ -6,15 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CustomerSupport.Repositories
+namespace CustomerSupport.Models
 {
-    public class CustomerSupportDbContext : IdentityDbContext
+    public class CustomerSupportDbContext : IdentityDbContext<User>
     {
         public CustomerSupportDbContext(DbContextOptions<CustomerSupportDbContext> options) : base(options)
         {
 
         }
 
-        //public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }

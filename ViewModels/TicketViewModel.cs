@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CustomerSupport.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CustomerSupport.Models
+namespace CustomerSupport.ViewModels
 {
-    public class Ticket
+    public class TicketViewModel
     {
         public int Id { get; set; }
         [Required]
@@ -19,12 +17,9 @@ namespace CustomerSupport.Models
         public DateTime? DateClosed { get; set; }
         [Required]
         public StatusEnum Status { get; set; }
-        public User Client { get; set; }
         [Required]
         public string ClientId { get; set; }
-        public bool IsDeleted { get; set; }
-
-        public List<Comment> Comments { get; set; }
-
+        public string UserEmail { get; set; }
+        public List<CommentViewModel> Comments { get; set; }
     }
 }

@@ -1,0 +1,11 @@
+﻿@model CustomerSupport.ViewModels.CreateTicketViewModel
+
+    <form asp-action="Add" method="post">
+        <input placeholder="Ticket title" asp-for="@Model.Title" class="form-control" />
+        <br />
+        <textarea placeholder="Ticket message" asp-for="@Model.Message" class="form-control" ></textarea>
+        <br />
+        <input type="submit" value="Create ticket" class="btn btn-primary" />
+        <br />
+        <div asp-validation-summary="All" class="text-danger" style="padding: 10px;"></div>
+    </form>

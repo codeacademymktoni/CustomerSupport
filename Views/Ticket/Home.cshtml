@@ -1,0 +1,65 @@
+﻿@model List<CustomerSupport.ViewModels.TicketViewModel>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>My tickets</h1>
+<br />
+<a class="btn btn-success" asp-action="Create">Create ticket</a>
+<br />
+<br />
+<table class="table table-dark">
+    <thead>
+        <tr>
+            @if (User.IsInRole("Employee"))
+            {
+                <th>Client Email</th>
+            }
+            <th>Title</th>
+            <th>Date created</th>
+            <th>Status</th>
+            <th>Date closed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                @if (User.IsInRole("Employee"))
+                {
+                    <td>@ticket.UserEmail</td>
+                }
+                <td>@ticket.Title</td>
+                <td>@ticket.DateCreated.ToString("dd-MMMM-yyyy")</td>
+                <td>@ticket.Status</td>
+                @if (ticket.DateClosed.HasValue)
+                {
+                    <td>@ticket.DateClosed.Value.ToString("dd-MMMM-yyyy")</td>
+                }
+                else
+                {
+                    <td>/</td>
+                }
+            <td>
+                <a class="btn btn-success btn-sm" asp-action="Details" asp-route-id="@ticket.Id">Details</a> |
+                @if (User.IsInRole("Employee"))
+                {
+                    @if (ticket.Status == CustomerSupport.Models.StatusEnum.Pending)
+                    {
+                        <a class="btn btn-primary btn-sm" asp-action="SetStatus" asp-route-id="@ticket.Id" asp-route-status="InProcess">Process</a>
+                    }
+                    else if (ticket.Status == CustomerSupport.Models.StatusEnum.InProcess)
+                    {
+                        <a class="btn btn-primary btn-sm" asp-action="SetStatus" asp-route-id="@ticket.Id" asp-route-status="Done">Set done</a>
+                    }
+                }
+                else
+                {
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@ticket.Id">Delete</a>
+                }
+            </td>
+            </tr>
+        }
+    </tbody>
+</table>

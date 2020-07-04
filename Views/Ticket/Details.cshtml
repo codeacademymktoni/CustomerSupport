@@ -1,0 +1,41 @@
+﻿@model CustomerSupport.ViewModels.TicketViewModel
+
+    <div class="container">
+        <h1>Details</h1>
+        <br />
+        <h3>Ticket title</h3>
+        <h3>@Model.Title</h3>
+        <hr />
+        <p>Ticket Message:</p>
+        <p>@Model.Message</p>
+        <hr />
+        <p>Status:</p>
+        <p>@Model.Status</p>
+        <hr />
+        <p>Date Created:</p>
+        <p>@Model.DateCreated.ToString("dd-MMMM-yyyy")</p>
+        <hr />
+        <p>Date Closed:</p>
+        @if (Model.DateClosed.HasValue)
+        {
+            <p>@Model.DateClosed.Value.ToString("dd-MMMM-yyyy")</p>
+        }
+        else
+        {
+            <p>/</p>
+        }
+        <hr />
+        <br />
+        <h3>Comment section</h3>
+        <form asp-controller="Comment" asp-action="Add" method="post">
+            <input type="hidden" name="ticketId" value="@Model.Id" />
+            <textarea name="message" class="form-control" placeholder="Add comment"></textarea>
+            <input type="submit" value="Comment" class="btn btn-primary" />
+        </form>
+        @foreach (var comment in Model.Comments)
+        {
+            <p>@comment.Email</p>
+            <p>@comment.Message</p>
+            <p>Created on: @comment.DateCreated.ToString("dd-MMMM-yyyy")</p>
+        }
+    </div>
